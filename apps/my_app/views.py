@@ -5,10 +5,11 @@ from .serializers import QuizSerializer, RandomQuestionSerializer, QuestionSeria
 from rest_framework.views import APIView
 
 
-class Quiz(generics.ListAPIView):
-
-    serializer_class = QuizSerializer
-    queryset = Quizzes.objects.all()
+class Quiz(APIView):
+    def get(self, request):
+        queryset = Quizzes.objects.all()
+        serializer_class = QuizSerializer(queryset, many=True)
+        return Response(serializer_class.data)
 
 
 class RandomQuestion(APIView):
@@ -21,7 +22,7 @@ class RandomQuestion(APIView):
 
 
 class QuizQuestion(APIView):
-    def get(self, request, format=None, **kwargs):
-        quiz = Question.objects.filter(quiz__title=kwargs["topic"])
+    def get(self, request):
+        quiz = Question.objects.all()
         serializer = QuestionSerializer(quiz, many=True)
         return Response(serializer.data)
