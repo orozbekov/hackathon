@@ -11,6 +11,7 @@ class Test(models.Model):
     question = models.CharField('Текст вопроса', max_length=150)
     answer = models.BooleanField('Ответы', default=False) # Да/Нет (тут храним правильный ответ)
 
+
 class ResultTests(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -30,7 +31,7 @@ class Profile(models.Model):
         verbose_name_plural = 'Тесты'
 
     def __str__(self):
-        return self.Name
+        return self.name
 
 
 class Question(models.Model):
@@ -43,7 +44,7 @@ class Question(models.Model):
         verbose_name_plural = 'Вопросы'
 
     def __str__(self):
-        return self.Text
+        return self.text
 
 
 class Answer(models.Model):
@@ -56,7 +57,7 @@ class Answer(models.Model):
         verbose_name_plural = 'Варианты ответа'
 
     def __str__(self):
-        return self.Text
+        return self.text
 
 
 class Result(models.Model):

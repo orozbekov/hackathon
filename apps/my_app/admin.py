@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.my_app.models import Test, Answer, Question, Result
+from apps.my_app.models import Test, Answer, Question, Result, ResultTests, Profile
 
 
 class QuestionsInline(admin.TabularInline):
@@ -17,9 +17,19 @@ class BookAdmin(admin.ModelAdmin):
     inlines = [QuestionsInline]
 
 
+@admin.register(ResultTests)
+class ResultTestsAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    pass
+
+
 @admin.register(Result)
 class ResultAdmin(admin.ModelAdmin):
-    list_display = ("ProfileId", "DateTime", "UserName", "Rating")
+    pass
 
     def has_add_permission(self, request):
         return False

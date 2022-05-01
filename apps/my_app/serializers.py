@@ -1,7 +1,7 @@
 from dataclasses import fields
 from rest_framework import serializers
 
-from apps.my_app.models import  Answer, Profile, Question, Result, ResultTests, Test
+from apps.my_app.models import Answer, Profile, Question, Result, ResultTests, Test
 from apps.my_app.models import ResultTests, Test
 
 
@@ -11,7 +11,6 @@ class TestSerializer(serializers.ModelSerializer):
         model = Test
         fields = ('id', 'question', 'answer')
 
-    
     
 class ResultTestsSerializer(serializers.ModelSerializer):
 
@@ -34,13 +33,12 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = ('id', 'profile_id', 'text', 'weight')
 
 
-
-
 class AnswerSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Answer
-        fields = ('id','question_id','text','is_right')
+        fields = ('id', 'question_id', 'text', 'is_right')
+
 
 class ResultSerializer(serializers.ModelSerializer):
     
@@ -48,8 +46,3 @@ class ResultSerializer(serializers.ModelSerializer):
         model = Result
         fields = ('id', 'profile_id', 'username', 'datetime', 'rating')
 
-class ResultTestSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = ResultTests
-        fields = ('id', 'test', 'user', 'result' )
