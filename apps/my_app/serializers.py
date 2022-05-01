@@ -1,48 +1,46 @@
-from dataclasses import fields
 from rest_framework import serializers
-
-from apps.my_app.models import Answer, Profile, Question, Result, ResultTests, Test
-from apps.my_app.models import ResultTests, Test
+from .models import Quizzes, Question, Answer
 
 
-class TestSerializer(serializers.ModelSerializer):
+class QuizSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = Test
-        fields = ('id', 'question', 'answer')
+        model = Quizzes
+        fields = [
+            'title',
+        ]
 
-    
-class ResultTestsSerializer(serializers.ModelSerializer):
+class AnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = ResultTests
-        fields = ('id' , 'test', 'user', 'result')
+        
+        model = Answer
+        fields = [
+            'id',
+            'answer_text',
+            'is_right',
+        ]
 
+class RandomQuestionSerializer(serializers.ModelSerializer):
 
-class ProfileSerializer(serializers.ModelSerializer):
-    
+    answer = AnswerSerializer(many=True, read_only=True)
+
     class Meta:
-        model = Profile
-        fields = ('id','name', 'work_time', 'questions_count', 'statisfactorily', 'good', 'perfect')
+    
+        model = Question
+        fields = [
+            'title','answer',
+        ]
 
 
 class QuestionSerializer(serializers.ModelSerializer):
 
+    answer = AnswerSerializer(many=True, read_only=True)
+    quiz = QuizSerializer(read_only=True)
+
     class Meta:
+    
         model = Question
-        fields = ('id', 'profile_id', 'text', 'weight')
-
-
-class AnswerSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Answer
-        fields = ('id', 'question_id', 'text', 'is_right')
-
-
-class ResultSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Result
-        fields = ('id', 'profile_id', 'username', 'datetime', 'rating')
-
+        fields = [
+            'quiz','title','answer',
+        ]

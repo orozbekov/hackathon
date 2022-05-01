@@ -1,72 +1,87 @@
 from django.db import models
-
-from apps.users.models import CustomUser
+from django.utils.translation import gettext_lazy as _
 
 
 class Category(models.Model):
-    pass
-
-
-class Test(models.Model):
-    question = models.CharField('Текст вопроса', max_length=150)
-    answer = models.BooleanField('Ответы', default=False) # Да/Нет (тут храним правильный ответ)
-
-
-class ResultTests(models.Model):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    result = models.BooleanField('Результат', default=False) # true если ответ был верный
-
-
-class Profile(models.Model):
-    name = models.CharField(max_length=200, verbose_name='Название теста')
-    work_time = models.IntegerField(verbose_name='Время выполнения (мин)')
-    questions_count = models.IntegerField(verbose_name='Количество вопросов')
-    statisfactorily = models.IntegerField(verbose_name='Удовлетворительно')
-    good = models.IntegerField(verbose_name='Хорошо')
-    perfect = models.IntegerField(verbose_name='Отлично')
-
-    class Meta:
-        verbose_name = 'Тесты'
-        verbose_name_plural = 'Тесты'
+    name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
 
-class Question(models.Model):
-    profile_id = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='Тест')
-    text = models.TextField(verbose_name='Текст вопроса')
-    weight = models.FloatField(default=1, verbose_name='Вес')
+class Quizzes(models.Model):
 
     class Meta:
-        verbose_name = 'Вопрос'
-        verbose_name_plural = 'Вопросы'
+        verbose_name = _("Quiz")
+        verbose_name_plural = _("Quizzes")
+        ordering = ['id']
+
+    title = models.CharField(max_length=255, default=_(
+        "New Quiz"), verbose_name=_("Quiz Title"))
+    category = models.ForeignKey(
+        Category, default=1, on_delete=models.DO_NOTHING)
+    date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.text
+        return self.title
 
 
-class Answer(models.Model):
-    question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
-    text = models.CharField(max_length=300)
-    is_right = models.BooleanField()
+class Updated(models.Model):
+
+    date_updated = models.DateTimeField(
+        verbose_name=_("Last Updated"), auto_now=True)
 
     class Meta:
-        verbose_name = 'Вариант ответа'
-        verbose_name_plural = 'Варианты ответа'
+        abstract = True
+
+
+class Question(Updated):
+
+    class Meta:
+        verbose_name = _("Question")
+        verbose_name_plural = _("Questions")
+        ordering = ['id']
+
+    SCALE = (
+        (0, _('Fundamental')),
+        (1, _('Beginner')),
+        (2, _('Intermediate')),
+        (3, _('Advanced')),
+        (4, _('Expert'))
+    )
+
+    TYPE = (
+        (0, _('Multiple Choice')),
+    )
+
+    quiz = models.ForeignKey(
+        Quizzes, related_name='question', on_delete=models.DO_NOTHING)
+    technique = models.IntegerField(
+        choices=TYPE, default=0, verbose_name=_("Type of Question"))
+    title = models.CharField(max_length=255, verbose_name=_("Title"))
+    difficulty = models.IntegerField(
+        choices=SCALE, default=0, verbose_name=_("Difficulty"))
+    date_created = models.DateTimeField(
+        auto_now_add=True, verbose_name=_("Date Created"))
+    is_active = models.BooleanField(
+        default=False, verbose_name=_("Active Status"))
 
     def __str__(self):
-        return self.text
+        return self.title
 
 
-class Result(models.Model):
-    profile_id = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='Тест')
-    username = models.CharField(max_length=300, verbose_name="ФИО")
-    datetime = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Время завершения")
-    rating = models.FloatField(verbose_name="Проценты")
+class Answer(Updated):
 
     class Meta:
-        verbose_name = 'Результат'
-        verbose_name_plural = 'Результаты'
+        verbose_name = _("Answer")
+        verbose_name_plural = _("Answers")
+        ordering = ['id']
 
+    question = models.ForeignKey(
+        Question, related_name='answer', on_delete=models.DO_NOTHING)
+    answer_text = models.CharField(
+        max_length=255, verbose_name=_("Answer Text"))
+    is_right = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.answer_text

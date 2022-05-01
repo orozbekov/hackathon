@@ -1,37 +1,49 @@
 from django.contrib import admin
+from . import models
 
-from apps.my_app.models import Test, Answer, Question, Result, ResultTests, Profile
+@admin.register(models.Category)
 
+class CatAdmin(admin.ModelAdmin):
+	list_display = [
+        'name',
+        ]
 
-class QuestionsInline(admin.TabularInline):
-    model = Answer
+@admin.register(models.Quizzes)
 
+class QuizAdmin(admin.ModelAdmin):
+	list_display = [
+        'id', 
+        'title',
+        ]
 
-@admin.register(Test)
-class TestAdmin(admin.ModelAdmin):
-    pass
+class AnswerInlineModel(admin.TabularInline):
+    model = models.Answer
+    fields = [
+        'answer_text', 
+        'is_right'
+        ]
 
+@admin.register(models.Question)
 
-@admin.register(Question)
-class BookAdmin(admin.ModelAdmin):
-    inlines = [QuestionsInline]
+class QuestionAdmin(admin.ModelAdmin):
+    fields = [
+        'title',
+        'quiz',
+        ]
+    list_display = [
+        'title', 
+        'quiz',
+        'date_updated'
+        ]
+    inlines = [
+        AnswerInlineModel, 
+        ] 
 
+@admin.register(models.Answer)
 
-@admin.register(ResultTests)
-class ResultTestsAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Result)
-class ResultAdmin(admin.ModelAdmin):
-    pass
-
-    def has_add_permission(self, request):
-        return False
-
-
+class AnswerAdmin(admin.ModelAdmin):
+    list_display = [
+        'answer_text', 
+        'is_right', 
+        'question'
+        ]
