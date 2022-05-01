@@ -8,17 +8,6 @@ class Category(models.Model):
 
 class Test(models.Model):
     question = models.CharField('Текст вопроса', max_length=150)
-    answer = models.BooleanField('Ответы', default=False)   # Да/Нет (тут храним правильный ответ)
-
-class ResultTests(models.Model):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    result = models.BooleanField('Результат', default=False) # true если ответ был верный
-
-
-
-class Test(models.Model):
-    question = models.CharField('Текст вопроса', max_length=150)
     answer = models.BooleanField('Ответы', default=False) # Да/Нет (тут храним правильный ответ)
 
 
@@ -29,12 +18,12 @@ class ResultTests(models.Model):
 
 
 class Profile(models.Model):
-    Name = models.CharField(max_length=200, verbose_name='Название теста')
-    WorkTime = models.IntegerField(verbose_name='Время выполнения (мин)')
-    QuestionsCount = models.IntegerField(verbose_name='Количество вопросов')
-    Statisfactorily = models.IntegerField(verbose_name='Удовлетворительно')
-    Good = models.IntegerField(verbose_name='Хорошо')
-    Perfect = models.IntegerField(verbose_name='Отлично')
+    name = models.CharField(max_length=200, verbose_name='Название теста')
+    work_time = models.IntegerField(verbose_name='Время выполнения (мин)')
+    questions_count = models.IntegerField(verbose_name='Количество вопросов')
+    statisfactorily = models.IntegerField(verbose_name='Удовлетворительно')
+    good = models.IntegerField(verbose_name='Хорошо')
+    perfect = models.IntegerField(verbose_name='Отлично')
 
     class Meta:
         verbose_name = 'Тесты'
@@ -45,9 +34,9 @@ class Profile(models.Model):
 
 
 class Question(models.Model):
-    ProfileId = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='Тест')
-    Text = models.TextField(verbose_name='Текст вопроса')
-    Weight = models.FloatField(default=1, verbose_name='Вес')
+    profile_id = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='Тест')
+    text = models.TextField(verbose_name='Текст вопроса')
+    weight = models.FloatField(default=1, verbose_name='Вес')
 
     class Meta:
         verbose_name = 'Вопрос'
