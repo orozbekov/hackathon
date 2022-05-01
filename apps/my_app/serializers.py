@@ -29,7 +29,7 @@ class RandomQuestionSerializer(serializers.ModelSerializer):
     
         model = Question
         fields = [
-            'title','answer',
+            'id','title','answer',
         ]
 
 
@@ -42,5 +42,5 @@ class QuestionSerializer(serializers.ModelSerializer):
     
         model = Question
         fields = [
-            'quiz','title','answer',
+            'id','quiz','title','answer',
         ]
