@@ -11,6 +11,11 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['name', ]
 
 
+class AnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ['question', 'answer_text', 'is_right']
+
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
@@ -20,6 +25,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 class QuizSerializer(serializers.ModelSerializer):
     category_name = serializers.SerializerMethodField()
     question = QuestionSerializer(many=True, read_only=True)
+    answer = AnswerSerializer(many=True, read_only=True)
 
     class Meta:
         model = Quizzes
