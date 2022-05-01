@@ -34,7 +34,7 @@ urlpatterns = [
 #     path('api/v1/news/', NewsView.as_view()),
 #     path('api/v1/users/', CustomUserView.as_view()),
 #     path('api/v1/test', TestView.as_view()),
- path('', Quiz.as_view(), name='quiz'),
+    path('api/v1/quiz', Quiz.as_view(), name='quiz'),
     path('r/<str:topic>/', RandomQuestion.as_view(), name='random' ),
     path('q/<str:topic>/', QuizQuestion.as_view(), name='questions' ),
 ]
