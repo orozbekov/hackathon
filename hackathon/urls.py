@@ -3,7 +3,7 @@ from django.urls import path, include, re_path
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from apps.my_app.views import NewsView, TestView
+from apps.my_app.views import TestView
 from apps.users.views import CustomUserView
 
 schema_view = get_schema_view(
@@ -32,7 +32,7 @@ urlpatterns = [
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0),
             name='schema-redoc'),
 
-    path('api/v1/news/', NewsView.as_view()),
+#     path('api/v1/news/', NewsView.as_view()),
     path('api/v1/users/', CustomUserView.as_view()),
     path('api/v1/test', TestView.as_view()),
 
