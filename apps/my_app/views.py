@@ -3,8 +3,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.my_app.models import News
-from apps.my_app.serializers import NewsSerializer
+from apps.my_app.models import Test, ResultTests, Profile, Question
+from apps.my_app.serializers import TestSerializer, ResultTestsSerializer, \
+    ProfileSerializer
 
 
 class Mixin(APIView):
@@ -17,12 +18,27 @@ class Mixin(APIView):
         return Response(srz.data)
 
 
-class NewsView(Mixin):
-    model_name = News
-    serializer_name = NewsSerializer
+class TestView(Mixin):
+    model_name = Test
+    serializer_name = TestSerializer
 
     def post(self, request):
         request_body = request.data
         new_product = self.model_name.objects.create()
         srz = self.serializer_name(new_product, many=False)
         return Response(srz.data, status=status.HTTP_201_CREATED)
+
+ class ResultTestsView(Mixin):
+     model_name = ResultTests
+     serializer_name = ResultTestsSerializer
+
+
+ class ProfileView(Mixin):
+     model_name = Profile
+     serializer_name = ProfileSerializer
+
+
+
+ class QestionView(Mixin):
+     model_name = Question
+     serializer_name = QestionSerializer
