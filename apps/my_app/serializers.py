@@ -1,7 +1,7 @@
 from dataclasses import fields
 from rest_framework import serializers
 
-from apps.my_app.models import  Profile, Question, ResultTests, Test
+from apps.my_app.models import  Answer, Profile, Question, Result, ResultTests, Test
 
 
 class TestSerializer(serializers.ModelSerializer):
@@ -36,7 +36,13 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class AnswerSerializer(serializers.ModelSerializer):
-    pass
+    
+    class Meta:
+        model = Answer
+        fields = ('id','question_id','text','is_right')
 
 class ResultSerializer(serializers.ModelSerializer):
-    pass
+    
+    class Meta:
+        model = Result
+        fields = ('id', 'profile_id', 'username', 'datetime', 'rating')

@@ -1,10 +1,9 @@
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.my_app.models import Test, ResultTests, Profile, Question
-from apps.my_app.serializers import TestSerializer, ResultTestsSerializer, \
+from apps.my_app.serializers import QuestionSerializer, TestSerializer, ResultTestsSerializer, \
     ProfileSerializer
 
 
@@ -41,4 +40,4 @@ class ProfileView(Mixin):
 
 class QestionView(Mixin):
      model_name = Question
-     serializer_name = QestionSerializer
+     serializer_name = QuestionSerializer

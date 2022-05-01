@@ -47,9 +47,9 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    QuestionId = models.ForeignKey(Question, on_delete=models.CASCADE)
-    Text = models.CharField(max_length=300)
-    IsRight = models.BooleanField()
+    question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=300)
+    is_right = models.BooleanField()
 
     class Meta:
         verbose_name = 'Вариант ответа'
@@ -60,10 +60,10 @@ class Answer(models.Model):
 
 
 class Result(models.Model):
-    ProfileId = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='Тест')
-    UserName = models.CharField(max_length=300, verbose_name="ФИО")
-    DateTime = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Время завершения")
-    Rating = models.FloatField(verbose_name="Проценты")
+    profile_id = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name='Тест')
+    username = models.CharField(max_length=300, verbose_name="ФИО")
+    datetime = models.DateTimeField(auto_now_add=True, blank=True, verbose_name="Время завершения")
+    rating = models.FloatField(verbose_name="Проценты")
 
     class Meta:
         verbose_name = 'Результат'
